@@ -1,0 +1,98 @@
+<% include ../partials/header %>
+<% include ../partials/menu %>
+	<div class="container">
+		<br>
+		<div class="jumbotron">
+		  <h1 class="display-4">Fall 2018 Stats</h1>
+		  <p class="lead">Detailed information on how the Buffs are doing in the 2018 Football Season!</p>
+		</div>
+		
+		<table class="table table-bordered" id="stats_table">
+			<tr>
+				<th class="align-bottom" rowspan="2">Game Date</th>
+				<th class="align-bottom"rowspan="2">Opposing Team Name</th>
+				<th class="text-center" colspan="2">Score</th>
+				<th class="align-bottom" rowspan="2">Winner</th>
+			</tr>
+			<tr>
+				<th>Home Score</th>
+				<th>Opp. Score</th>
+			</tr>
+			<!-- TODO: Iterate over the Football_table data here 
+						1. Display the information for each row (date, name, home score, visitor score)
+						2. Determine who the winner is and display it in the final column
+
+						If you're not sure how the logic should work here, review the code you add to the client-side javascript
+						that ran onload for Lab 5.  We are doing the same kind of operations we had in Lab 5, but we are instead having
+						everything handled via server-side scriptes
+			-->
+			<form action="/team_stats" method="get">
+				<% 
+				if (data) { 
+					console.log("here")
+					var rows = '';
+					data.forEach(function(item){
+						rows += '<tr>'
+						rows += '<td>' + item.game_date + '</td>'
+						rows += '<td>' + item.visitor_name + '</td>'
+						rows += '<td>' + item.home_score + '</td>'
+						rows += '<td>' + item.visitor_score + '</td>'
+						if(item.home_score > item.visitor_score)
+						{
+							rows += '<td>CU Boulder</td>'
+						}
+						else
+						{
+							rows += '<td>' + item.visitor_name+ '</td>'
+						}
+						
+						rows += '</tr>';	
+					}); 
+					%>
+					<%- rows %> 
+				<% } %>
+			</form>
+			
+		</table>
+		<br>
+		<table class="table text-center">
+			<tr>
+				<th>Wins</th>
+				<th>Losses</th>
+			</tr>
+			<tr>
+				<td> 
+					<form action="/team_stats" method="get">
+						<% 
+						if (winning) 
+						{ 
+							console.log("here2")
+							var win_val = '';
+							winning.forEach(function(wins){
+								win_val += wins.count;
+							});
+							%>
+							<%- win_val %> 
+						<% } %>
+					</form>
+				</td>
+				<td> 
+					<form action="/team_stats" method="get">
+						<% 
+						if (lossing) 
+						{ 
+							console.log("here3")
+							var loss_val = '';
+							lossing.forEach(function(wins){
+								loss_val += wins.count;
+							});
+							%>
+							<%- loss_val %> 
+						<% } %>	
+					</form>
+				</td>
+			</tr>
+		</table>
+		
+	</div>
+<% include ../partials/footer %>
